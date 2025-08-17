@@ -1,0 +1,60 @@
+{
+	"name": "Kubernetes development",
+	"image": "localhost/quetzacoatl:latest",
+	"build": {
+		"context": "image",
+		"dockerfile": "image/Dockerfile"
+	},
+	"containerUser": "dev",
+	"overrideCommand": true,
+	"privileged": false,
+	"runArgs": [
+		"--cap-drop=ALL",
+		"--read-only",
+		"--security-opt=no-new-privileges",
+		"--tmpfs=/tmp:rw,exec,nosuid,nodev"
+	],
+	"mounts": [
+		{
+			"source": "devcontainer-home-${devcontainerId}",
+			"target": "/home/dev",
+			"type": "volume"
+		},
+		{
+			"source": "${localWorkspaceFolder}",
+			"target": "/workspace",
+			"type": "bind"
+		}
+	],
+	"onCreateCommand": "/bin/sh -c 'terraform -install-autocomplete && mkdir -p ~/.oh-my-zsh/completions && kubectl completion zsh > ~/.oh-my-zsh/completions/_kubectl'",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"bierner.markdown-mermaid",
+				"HashiCorp.terraform",
+				"ms-azuretools.vscode-containers",
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"redhat.vscode-yaml",
+				"tamasfe.even-better-toml"
+			],
+			"settings": {
+				"explorer.excludeGitIgnore": true,
+				"files.watcherExclude": {
+					"**/.git/objects/**": true,
+					"**/.git/subtree-cache/**": true,
+					"**/target/**": true
+				}
+			}
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"configureZshAsDefaultShell": true,
+			"installZsh": true,
+			"installOhMyZsh": true,
+			"installOhMyZshConfig": true,
+			"nonFreePackages": false,
+			"upgradePackages": false
+		}
+	}
+}
