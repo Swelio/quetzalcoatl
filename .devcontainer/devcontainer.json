@@ -26,7 +26,6 @@
 			"type": "bind"
 		}
 	],
-	"onCreateCommand": "/bin/sh -c 'terraform -install-autocomplete && mkdir -p ~/.oh-my-zsh/completions && kubectl completion zsh > ~/.oh-my-zsh/completions/_kubectl'",
 	"customizations": {
 		"vscode": {
 			"extensions": [
