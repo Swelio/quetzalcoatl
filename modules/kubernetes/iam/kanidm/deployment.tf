@@ -78,7 +78,7 @@ resource "kubernetes_deployment" "this" {
 
           env {
             name  = "KANIDM_DOMAIN"
-            value = "kanidm.iam.svc.cluster.local"
+            value = "kanidm.iam"
           }
           env {
             name  = "KANIDM_DB_PATH"
@@ -86,7 +86,7 @@ resource "kubernetes_deployment" "this" {
           }
           env {
             name  = "KANIDM_ORIGIN"
-            value = "https://kanidm.iam.svc.cluster.local"
+            value = "https://kanidm.iam"
           }
 
           env {

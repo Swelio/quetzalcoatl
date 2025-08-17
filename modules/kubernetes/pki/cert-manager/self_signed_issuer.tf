@@ -1,10 +1,11 @@
 resource "kubernetes_manifest" "self_signed_issuer" {
   manifest = {
     apiVersion = "cert-manager.io/v1"
-    kind       = "ClusterIssuer"
+    kind       = "Issuer"
     metadata = {
-      name   = "self-signed-issuer"
-      labels = local.default_labels
+      name      = "self-signed-issuer"
+      namespace = "cert-manager"
+      labels    = local.default_labels
     }
     spec = {
       selfSigned = {}

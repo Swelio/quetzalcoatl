@@ -12,7 +12,8 @@ resource "kubernetes_manifest" "certificate" {
       commonName = "kanidm"
       secretName = "kanidm-certificate"
       privateKey = {
-        algorithm = "Ed25519"
+        algorithm = "ECDSA"
+        size      = 384
       }
       issuerRef = {
         name  = "certificate-authority"
@@ -20,7 +21,12 @@ resource "kubernetes_manifest" "certificate" {
         group = "cert-manager.io"
       }
       usages = [
+        "digital signature",
         "server auth"
+      ]
+      dnsNames = [
+        "kanidm.iam.svc.cluster.local",
+        "kanidm.iam"
       ]
     }
   }

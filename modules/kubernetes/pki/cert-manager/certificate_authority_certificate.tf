@@ -9,14 +9,14 @@ resource "kubernetes_manifest" "certificate_authority_certificate" {
     }
     spec = {
       isCA       = true
-      commonName = "cluster-ca"
+      commonName = "cluster-authority"
       secretName = local.certificate_authority_secret
       privateKey = {
         algorithm = "Ed25519"
       }
       issuerRef = {
         name  = "self-signed-issuer"
-        kind  = "ClusterIssuer"
+        kind  = "Issuer"
         group = "cert-manager.io"
       }
     }
