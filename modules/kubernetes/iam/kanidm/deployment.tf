@@ -31,8 +31,33 @@ resource "kubernetes_deployment" "this" {
           name = "kanidm-cert"
           secret {
             secret_name  = "kanidm-certificate"
-            default_mode = "0400"
+            default_mode = "0440"
           }
+        }
+        volume {
+          name = "kanidm-config"
+          secret {
+            secret_name  = kubernetes_secret.configuration.metadata[0].name
+            default_mode = "0440"
+          }
+        }
+        volume {
+          name = "kanidm-db"
+          empty_dir {
+            size_limit = "500Mi"
+          }
+        }
+        volume {
+          name = "kanidm-admin-socket"
+          empty_dir {
+            size_limit = "10Mi"
+          }
+        }
+
+        security_context {
+          run_as_non_root = true
+          run_as_user     = "1024"
+          fs_group        = "1024"
         }
 
         container {
@@ -42,6 +67,7 @@ resource "kubernetes_deployment" "this" {
 
           security_context {
             allow_privilege_escalation = false
+            read_only_root_filesystem  = true
             capabilities {
               drop = ["ALL"]
             }
@@ -70,33 +96,28 @@ resource "kubernetes_deployment" "this" {
             }
           }
 
+          env {
+            name  = "KANIDM_ADMIN_BIND_PATH"
+            value = "/var/run/kanidm_admin.sock"
+          }
+
           volume_mount {
             name       = "kanidm-cert"
             mount_path = "/certificate"
             read_only  = true
           }
-
-          env {
-            name  = "KANIDM_DOMAIN"
-            value = "kanidm.iam"
+          volume_mount {
+            name       = "kanidm-config"
+            mount_path = "/data"
+            read_only  = true
           }
-          env {
-            name  = "KANIDM_DB_PATH"
-            value = "/data/kanidm.db"
+          volume_mount {
+            name       = "kanidm-db"
+            mount_path = "/database"
           }
-          env {
-            name  = "KANIDM_ORIGIN"
-            value = "https://kanidm.iam"
-          }
-
-          env {
-            name  = "KANIDM_TLS_CHAIN"
-            value = "/certificate/tls.crt"
-          }
-
-          env {
-            name  = "KANIDM_TLS_KEY"
-            value = "/certificate/tls.key"
+          volume_mount {
+            name       = "kanidm-admin-socket"
+            mount_path = "/var/run"
           }
         }
       }

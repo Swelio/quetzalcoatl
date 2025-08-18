@@ -1,4 +1,5 @@
 locals {
+  domain    = "kanidm.iam"
   namespace = var.namespace
   version   = var.kanidm_version
   replicas  = var.replicas
