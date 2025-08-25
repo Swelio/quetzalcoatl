@@ -19,8 +19,9 @@ RUN --mount=type=bind,source=apt.conf,target=/etc/apt/apt.conf \
 RUN curl --tlsv1.3 -sSL --output "/usr/local/bin/kubectl" \
     "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 RUN --mount=type=tmpfs,target=/tmp/terraform \
-    curl --tlsv1.3 -sSL --output "/tmp/terraform/terraform.zip" \
-    "https://releases.hashicorp.com/terraform/1.12.2/terraform_1.12.2_linux_amd64.zip" \
+    export TERRAFORM_VERSION="1.13.0" \
+    && curl --tlsv1.3 -sSL --output "/tmp/terraform/terraform.zip" \
+    "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" \
     && unzip /tmp/terraform/terraform.zip terraform -d "/usr/local/bin"
 RUN export CLIFF_VERSION="2.10.0" \
     && curl --tlsv1.3 -sSL "https://github.com/orhun/git-cliff/releases/download/v${CLIFF_VERSION}/git-cliff-${CLIFF_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
