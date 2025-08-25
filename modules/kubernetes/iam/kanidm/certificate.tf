@@ -9,7 +9,7 @@ resource "kubernetes_manifest" "certificate" {
     }
     spec = {
       isCA       = false
-      commonName = "kanidm"
+      commonName = local.domain
       secretName = "kanidm-certificate"
       privateKey = {
         algorithm = "ECDSA"
@@ -25,8 +25,7 @@ resource "kubernetes_manifest" "certificate" {
         "server auth"
       ]
       dnsNames = [
-        "kanidm.iam.svc.cluster.local",
-        "kanidm.iam"
+        local.domain
       ]
     }
   }

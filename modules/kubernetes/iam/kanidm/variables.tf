@@ -24,3 +24,10 @@ variable "environment" {
   type        = string
   nullable    = false
 }
+
+variable "domain" {
+  description = "Root domain of the iam system"
+  type        = string
+  nullable    = false
+  sensitive   = true
+}

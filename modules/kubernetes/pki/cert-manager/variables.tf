@@ -1,5 +1,5 @@
-variable "cert_manager_version" {
-  description = "Cert-Manager version to deploy"
+variable "authority_certificate_secret_name" {
+  description = "Certificate authority secret-name"
   type        = string
   nullable    = false
 }

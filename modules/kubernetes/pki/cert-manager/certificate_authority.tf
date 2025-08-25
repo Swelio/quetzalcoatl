@@ -8,10 +8,8 @@ resource "kubernetes_manifest" "certificate_authority" {
     }
     spec = {
       ca = {
-        secretName = local.certificate_authority_secret
+        secretName = var.authority_certificate_secret_name
       }
     }
   }
-
-  depends_on = [kubernetes_manifest.certificate_authority_certificate]
 }
